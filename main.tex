@@ -45,26 +45,26 @@
     orcid=0000-0002-0821-6995,
 ]
 
-\author[3,4,5]{Daniel Mietchen}[%
-    orcid=0000-0001-9488-1870,
-]
+%\author[3,4,5]{Daniel Mietchen}[%
+%    orcid=0000-0001-9488-1870,
+%]
 
-\author[6]{Peter Patel-Schneider}[%
-    orcid=0000-0002-3563-3693,
-]
+%\author[6]{Peter Patel-Schneider}[%
+%    orcid=0000-0002-3563-3693,
+%]
 
-\author[7]{Konrad Linden}[%
-    orcid=0000-0003-1321-2993,
-]
+%\author[7]{Konrad Linden}[%
+%    orcid=0000-0003-1321-2993,
+%]
 
 %% Affiliations
 \address[1]{Department of Translational Genomics, NUTRIM, Maastricht University, Netherlands}
 \address[2]{BITPlan GmbH, Willich, Germany}
-\address[3]{FIZ Karlsruhe -- Leibniz Institute for Information Infrastructure, Germany}
-\address[4]{Leibniz Institute of Freshwater Ecology and Inland Fisheries (IGB), Germany}
-\address[5]{Institute for Globally Distributed Open Research and Education (IGDORE), Germany}
-\address[6]{Institution Name Here}
-\address[7]{Institution Name Here}
+%\address[3]{FIZ Karlsruhe -- Leibniz Institute for Information Infrastructure, Germany}
+%\address[4]{Leibniz Institute of Freshwater Ecology and Inland Fisheries (IGB), Germany}
+%\address[5]{Institute for Globally Distributed Open Research and Education (IGDORE), Germany}
+%\address[6]{Institution Name Here}
+%\address[7]{Institution Name Here}
 
 \begin{document}
 
@@ -86,11 +86,24 @@ Wikidata
 \maketitle
 
 \section{Introduction}
+The Wikidata graph split \cite{wikidata:wdqs:graphsplit} has challenged the continuation of the Scholia service. 
 
-% Add your introduction content here
+\section{Background}
+Scholia \cite{Nielsen_Scholia_Scientometrics_and_2017} is a portal for the scientific community that
+provides access to Wikidata \cite{Vrandecic2014} curated content using a set of 387 queries organized in over 20 aspects. General aspects such as Author, Work, Venue, Topic, Organization, Publisher, Event and Location are covered as well as biochemical related ones such as Chemical compound, Gene/Protein, Disease and Taxon.
 
-\section*{Declaration on Generative AI}
-The author(s) have not employed any Generative AI tools.
+The Wikimedia Foundation provided Wikidata Query Service is using blazegraph as its SPARQL endpoint. The blazegraph 4TB storage limit is a threat to the continuation of the Wikidata service. Given the close to exponential growth of content since the launch in October 2012 the limit would be met within the upcoming months. Therefore the \cite{wikidata:wdqs:graphsplit} graph split was announced and performed in 2025. 
+The split led to having a wikidata-main graph with 8.6 billion triples and a wikidata-scholia graph with 8.7 billion triples instead of the full graph havin 17.1 billion triples.
+
+\section{Options}
+Given the deadline of January 2026 at which point the full graph provided by the Wikimedia Foundation will not be available any more the Scholia project was forced to take action and pursued the following options:
+\begin{itemize}
+   \item modify affected queries to use federation accross the two split graphs 
+  \item migrate to a different backend such as QLever
+\end{itemize}
+
+
+\section{Exploring Backend options}
 
 %%
 %% Define the bibliography file to be used
