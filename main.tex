@@ -1,0 +1,100 @@
+% SWAT4LS 2026 - Wikidata in healthcare and life sciences
+% Integration and Tools: Exploring how Wikidata integrates with health data systems
+% Real-World Applications: Showcasing case studies of Wikidata's impact
+% Challenges: Identifying challenges in using Wikidata, with proposed solutions
+
+%% The first command in your LaTeX source must be the \documentclass command.
+\documentclass{ceurart}
+
+%%
+%% One can fix some overfulls
+\sloppy
+
+%%
+%% Minted listings support 
+\usepackage{listings}
+\lstset{breaklines=true}
+
+%%
+%% Define ORCID macro if not defined by common input or class
+\newcommand{\orcidID}[1]{\orcid{#1}}
+
+%%
+%% Rights management information.
+\copyrightyear{2026}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0
+  International (CC BY 4.0).}
+
+%%
+%% This command is for the conference information
+\conference{SWAT4LS 2026: Semantic Web Applications and Tools for Health Care and Life Sciences, 2026}
+
+%%
+%% The "title" command
+\title{Scholia Wikidata Graph Split Mitigation}
+
+%%
+%% The "author" command and its associated commands
+\author[1]{Egon L. Willighagen}[%
+    orcid=0000-0001-7542-0286,
+    % email=e.willighagen@maastrichtuniversity.nl, % Add email if desired
+]
+
+\author[2]{Wolfgang Fahl}[%
+    orcid=0000-0002-0821-6995,
+]
+
+\author[3,4,5]{Daniel Mietchen}[%
+    orcid=0000-0001-9488-1870,
+]
+
+\author[6]{Peter Patel-Schneider}[%
+    orcid=0000-0002-3563-3693,
+]
+
+\author[7]{Konrad Linden}[%
+    orcid=0000-0003-1321-2993,
+]
+
+%% Affiliations
+\address[1]{Department of Translational Genomics, NUTRIM, Maastricht University, Netherlands}
+\address[2]{BITPlan GmbH, Willich, Germany}
+\address[3]{FIZ Karlsruhe -- Leibniz Institute for Information Infrastructure, Germany}
+\address[4]{Leibniz Institute of Freshwater Ecology and Inland Fisheries (IGB), Germany}
+\address[5]{Institute for Globally Distributed Open Research and Education (IGDORE), Germany}
+\address[6]{Institution Name Here}
+\address[7]{Institution Name Here}
+
+\begin{document}
+
+%%
+%% The abstract
+\begin{abstract}
+Wikidata was forced to perform a graph split in 2025 which will lead to the deactivation of the full legacy graph server in January 2026. The split has forced the Scholia project to overhaul the backend and query set being in use.
+\end{abstract}
+
+%%
+%% Keywords
+\begin{keywords}
+Scholia \sep 
+Wikidata
+\end{keywords}
+
+%%
+%% This command processes the author and affiliation and title information
+\maketitle
+
+\section{Introduction}
+
+% Add your introduction content here
+
+\section*{Declaration on Generative AI}
+The author(s) have not employed any Generative AI tools.
+
+%%
+%% Define the bibliography file to be used
+%% Ensure you have a 'references.bib' file in the same directory
+\bibliography{references}
+
+\end{document}

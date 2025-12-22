@@ -1,0 +1,87 @@
+%% common LaTeX set up
+%% WF 2025-12-06 (revised for pdfLaTeX/LNCS with UTF-8 workarounds)
+
+% UTF-8 input and font encoding
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}  % Standard encoding for better character support
+
+% Standard LNCS fonts
+%\usepackage{mathptmx}  % Times-like for math/text
+%\usepackage{helvet}    % Helvetica for sans-serif
+%\usepackage{courier}   % Courier for monospace (limited UTF-8, hence workarounds below)
+
+% Multicolumn support
+%\usepackage{multicol}
+
+% Linenumbers (if needed; comment out otherwise)
+\usepackage{lineno}
+
+% Make references clickable (load late to avoid conflicts)
+\usepackage{hyperref}
+
+% Source code rendering (listings for simplicity)
+\usepackage{listings}
+\usepackage{xcolor}  % For listings colors
+
+% Graphics and SVG (if needed; SVG requires inkscape or similar with --shell-escape)
+\usepackage{graphicx}
+\usepackage{svg}
+
+%% Custom Commands
+% ORCID ID
+\providecommand{\orcidID}[1]{%
+  \href{https://orcid.org/#1}{%
+    \includegraphics[width=8pt]{images/orcid.png}%
+  }%
+}
+\newcommand\wf{{Wolfgang Fahl \orcidID{0000-0002-0821-6995}}}
+
+% Footnotelink
+\newcommand{\footnotelink}[2]{\href{#1}{#2}\footnote{#1}}
+\newcommand{\footnotelonglink}[2]{#2\footnote{\url{#1}}}
+
+% Typographical quoting
+\newcommand{\tquote}[1]{``#1''}
+
+% Wikidata references
+\newcommand{\wdq}[2]{\footnotelink{https://www.wikidata.org/wiki/#2}{#1 (#2)}}
+\newcommand{\wdp}[2]{\footnotelink{https://www.wikidata.org/wiki/Property:#2}{#1 (#2)}}
+
+% In-document referencing
+\newcommand{\seeref}[1]{(see Section~\ref{#1})}
+\newcommand{\fullref}[1]{\ref{#1}.~\nameref{#1}}
+
+% Listings setup with UTF-8 workarounds (replace unsupported chars like emojis)
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  extendedchars=true,  % Basic UTF-8 support
+  literate={��}{{[office]}}1  % Workaround: Replace emoji with text (add more as needed, e.g., {��}{{[smile]}}1)
+}
+
+% YAML language definition for listings
+\lstdefinelanguage{yaml}{
+  keywords={true,false,null,y,n},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={label, wikidata_id, icon, type, web_url, from, to, sequence, start_node},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+% Example usage in your main.tex:
+% \begin{lstlisting}[language=yaml]
+% key: value ��  % This will render as "key: value [office]"
+% \end{lstlisting}
