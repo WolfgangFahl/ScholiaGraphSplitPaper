@@ -77,7 +77,6 @@
 %%
 %% The abstract
 \begin{abstract}
-\comment{If Hannah is listed as an author, her mentions in the text and in the acknowledgments should be adjusted accordingly}
 Scholia is a specialized portal that uses a combination of SPARQL and the Flask
   Python platform to visualize data from Wikidata. In this demonstration, we will show
   how Scholia works and how the Scholia
@@ -127,7 +126,7 @@ Wikidata is a crowd-curated platform providing general reference information in 
 Scholia~\cite{Nielsen_Scholia_Scientometrics_and_2017} is a specialized portal for the scientific community that 
 serves
 % provides access to 
-Wikidata content through a set of 387 precomposed SPARQL query templates organized into over 40 profile types, known as aspects. These cover general entities such as authors, works, venues and organizations as well as more special ones like taxa, diseases, chemicals, genes or proteins~\cite{Willighagen2025}. Because Scholia’s queries frequently require data from both the general and scholarly Wikidata subsets, the split posed a critical challenge to the continuation of the service. As an interim solution, the Wikimedia Foundation continued to provide a Blazegraph instance with the unified full graph until 
+Wikidata content through a set of 387 precomposed SPARQL query templates organized into over 40 profile types, known as aspects. These cover general entities such as authors, works, venues, organizations, events, and event series, as well as more special ones like taxa, diseases, chemicals, genes or proteins~\cite{Willighagen2025}. Because Scholia’s queries frequently require data from both the general and scholarly Wikidata subsets, the split posed a critical challenge to the continuation of the service. As an interim solution, the Wikimedia Foundation continued to provide a Blazegraph instance with the unified full graph until 
 % decommissioning it on 
 20 January 2026.
 % 
@@ -220,15 +219,13 @@ Versions of the templates had to be written to work well with unbound query vari
 In general, though the process took about eighteen months, the overall results are quite satisfactory, and the QLever-based setup exhibits improved performance compared to the original Blazegraph one.  
 % Only very few queries still have problems in early 2026.  As several queries were problematic in Blazegraph as well, the few remaining problems with the QLever backend do not indicate a reduction in overall performance of Scholia.
 While the official Scholia service is yet to be updated to use the new QLever-based setup, our effort shows that it is generally possible to adjust any system that uses the WDQS to instead use standard SPARQL~1.1 queries.
-
 The Wikimedia Foundation is looking into making its
-official Wikidata Query Service SPARQL 1.1. compliant, too. If, contrary to current
-expectations, that service does not use QLever, the Scholia queries may need some further adjustments. 
+official Wikidata Query Service SPARQL 1.1. compliant, too. If they choose a service other than QLever, the Scholia queries may need some further adjustments. 
 
 \medskip
 %\section{Conclusion}
     
-The demo at SWAT4HCLS will be set up to demonstrate Scholia, along with opportunities to investigate the changes made in the conversion and effects of using QLever.
+The demo at SWAT4HCLS will show various Scholia aspects, e.g. for the SWAT4HCLS event series, along with opportunities to investigate the changes made in the conversion and effects of using QLever.
 
 \begin{acknowledgments}
   The authors thank everyone who has contributed patches or bug reports to the Scholia project, particularly
