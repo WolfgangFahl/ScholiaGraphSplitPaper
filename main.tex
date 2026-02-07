@@ -1,4 +1,4 @@
-% Paper to be submitted for
+% Paper submitted for
 % https://www.swat4ls.org/workshops/amsterdam-2026/call-for-papers/
 % SWAT4LS 2026 - Wikidata in healthcare and life sciences
 % Integration and Tools: Exploring how Wikidata integrates with health data systems
@@ -6,7 +6,10 @@
 % Challenges: Identifying challenges in using Wikidata, with proposed solutions
 % https://github.com/WolfgangFahl/ScholiaGraphSplitPaper
 
+
 \documentclass{ceurart}
+\usepackage{comment}
+
 \include{common}
 %%
 %% One can fix some overfulls
@@ -65,7 +68,7 @@
 \address[1]{Department of Translational Genomics, NUTRIM, Maastricht University, The Netherlands}
 \address[2]{FIZ Karlsruhe -- Leibniz Institute for Information Infrastructure, Karlsruhe, Germany}
 \address[3]{Leibniz Institute of Freshwater Ecology and Inland Fisheries (IGB), Berlin, Germany}
-\address[4]{Institute for Globally Distributed Open Research and Education (IGDORE), Germany}
+\address[4]{Institute for Globally Distributed Open Research and Education (IGDORE), Jena, Germany}
 \address[5]{Albert-Ludwigs-Universität Freiburg, Freiburg im Breisgau, Germany}
 \address[6]{Department of Ecology, Radboud Institute for Biological and Environmental Sciences,
   Radboud University, The Netherlands}
@@ -74,16 +77,19 @@
 %%
 %% The abstract
 \begin{abstract}
-Scholia is a graphical user interface that uses a combination of SPARQL and the Flask
+\comment{If Hannah is listed as an author, her mentions in the text and in the acknowledgments should be adjusted accordingly}
+Scholia is a specialized portal that uses a combination of SPARQL and the Flask
   Python platform to visualize data from Wikidata. In this demonstration, we will show
-  how Scholia works and how efforts in the past eighteen months by the Scholia project
-  members make it independent from the Wikidata Query Service Blazegraph installation (WDQS). The reason for this effort was
-  a forced Wikidata graph split in 2025, and most Scholia
-  SPARQL queries were tuned towards the WDQS. The project explored
+  how Scholia works and how the Scholia
+  team made it independent from the Blazegraph-based Wikidata Query Service (WDQS) over the past eighteen months. 
+  This had become necessary due to
+  a forced Wikidata graph split in 2025, which affected Scholia because most of its
+  SPARQL queries were tuned towards the WDQS dialect of SPARQL. 
+  The project explored
   various options, including writing federated SPARQL queries
-  using the new functionalities provided by WDQS, but here, we
-  discuss a solution involving standard SPARQL~1.1 queries,
-  compatible with any SPARQL~1.1 engine, for example QLever.
+  using the new functionalities provided by the split WDQS, but here, we
+  discuss a concerted effort to make Scholia queries 
+  compatible with a SPARQL~1.1 compliant engine, QLever.
 \end{abstract}
 
 %%
@@ -116,14 +122,24 @@ Python
 %\end{itemize}
 
 
-Wikidata is a crowd-curated platform providing general reference information in a semantic format~\cite{Vrandecic2014}. Its official SPARQL service, the Wikidata Query Service (WDQS), has historically relied on the Blazegraph engine to evaluate queries against the
-graph~\cite{malyshev2018getting}. However, as Wikidata has grown to over 17 billion triples, Blazegraph has reached significant performance limits. This led the Wikimedia Foundation to split the service into two halves during 2025: WDQS-main, containing roughly 8.6 billion triples of general data, and WDQS-scholarly, containing 8.7 billion triples related to scholarly articles \cite{lubiana2024wdqs}.
+Wikidata is a crowd-curated platform providing general reference information in a semantic format~\cite{Vrandecic2014}. Its official SPARQL service, the Wikidata Query Service (WDQS), has historically relied on the Blazegraph engine to evaluate queries~\cite{malyshev2018getting}. However, as Wikidata grew to over 17 billion triples, its Blazegraph backend has reached significant performance limits. This led the Wikimedia Foundation to split the query service into two parts in 2025: WDQS-main, containing roughly 8.6 billion triples of general data, and WDQS-scholarly, containing 8.7 billion triples related to scholarly articles \cite{lubiana2024wdqs}.
 
-Scholia~\cite{Nielsen_Scholia_Scientometrics_and_2017} is a specialized portal for the scientific community that provides access to this curated content through a set of 387 precomposed SPARQL query templates organized into over 40 profile types, known as aspects. These cover general entities such as authors, works, venues and organizations, as well as taxa or diseases and biochemical aspects like chemicals, genes or proteins~\cite{Willighagen2025}. Because Scholia’s queries frequently require data from both the general and scholarly subsets of the graph, the split posed a critical challenge to the continuation of the service, and as an interim solution, the Wikimedia Foundation continued to provide a Blazegraph instance with the unified full graph, with a decommissioning date in January 2026.
+Scholia~\cite{Nielsen_Scholia_Scientometrics_and_2017} is a specialized portal for the scientific community that 
+serves
+% provides access to 
+Wikidata content through a set of 387 precomposed SPARQL query templates organized into over 40 profile types, known as aspects. These cover general entities such as authors, works, venues and organizations as well as more special ones like taxa, diseases, chemicals, genes or proteins~\cite{Willighagen2025}. Because Scholia’s queries frequently require data from both the general and scholarly Wikidata subsets, the split posed a critical challenge to the continuation of the service. As an interim solution, the Wikimedia Foundation continued to provide a Blazegraph instance with the unified full graph until 
+% decommissioning it on 
+20 January 2026.
 % 
-Preparing for this change, the Scholia team investigated three primary recovery routes. The first involved modifying existing queries to use SPARQL federation to communicate between the two split endpoints. This was found to be impractical, as inter-service communication led to severe performance degradation and the loss of optimization opportunities \cite{lubiana2024wdqs}. A second option explored the use of snapQuery middleware \cite{Fahl_SnapQuery_2025} to generalize query access across endpoints.
+Preparing for this change, the Scholia team investigated three primary recovery routes, 
+% of which  was 
+ultimately selecting the third one:
+\begin{enumerate}
+    \item Modifying existing queries to use SPARQL federation to communicate between the two split endpoints. This was found to be impractical, as inter-service communication led to severe performance degradation and the loss of optimization opportunities \cite{lubiana2024wdqs}. 
+    \item Using snapQuery middleware \cite{Fahl_SnapQuery_2025} to generalize query access across endpoints.
+    \item Remove any Blazegraph-specific constructs in Scholia and instead changing all the queries to standard SPARQL 1.1. This allows the use of any SPARQL 1.1 engine that can effectively evaluate queries against the entire Wikidata graph, including QLever \cite{qlever}, MilleniumDB, and Virtuoso, not only obviating the need to switch to a split-service architecture with its inherent inefficiencies but also leveraging modern engines that are considerably faster than Blazegraph.
+\end{enumerate}
 % 
-The third and ultimately selected route was to remove any Blazegraph-specific constructs in Scholia and instead changing all the queries to standard SPARQL 1.1.  This allows the use of any SPARQL 1.1 engine that can effectively evaluate queries against the entire Wikidata graph, including QLever \cite{qlever}, MilleniumDB, and Virtuoso, not only obviating the need to switch to a split-service architecture with its inherent inefficiencies but also leveraging modern engines that are considerably faster than Blazegraph.
 
 %Recent benchmarking of SPARQL backends \cite{patelschneider2024benchmarking} supported the decision to move toward QLever \cite{qlever}. 
 
@@ -169,14 +185,14 @@ The third and ultimately selected route was to remove any Blazegraph-specific co
 
 
 
-\bigskip
+%\bigskip
 %\section{Migration Process}
 
 A fork of the original Scholia project was created~\cite{scholia:github} to collaborate on the necessary modifications, around which several hackathons were organized~\cite{wikidata:scholia:events2025}.
-A decision was first made to use QLever~\cite{qlever} and a special Wikidata query service that had previously been set up by the QLever team~(\url{https://qlever.dev/api/wikidata}).
-A benchmark of SPARQL backends~\cite{patelschneider2024benchmarking} showing that QLever was fast on Scholia queries supported this decision.
+A decision was made to use a Wikidata query service~(\url{https://qlever.dev/api/wikidata}) powered by QLever~\cite{qlever}.
+This decision was supported by benchmarking multiple SPARQL backends~\cite{patelschneider2024benchmarking}, of which QLever was fastest overall.
 
-The bulk of the work was eliminating non-standard constructs from query templates.  The major categories of these constructs were:
+The bulk of the work was eliminating non-standard constructs from query templates.  The major types of these constructs were:
 %%\begin{itemize}
 %%    \item 
     named sub-queries;
@@ -190,21 +206,26 @@ the Wikibase service allowing communication with the MediaWiki API for e.g. sear
 %%    \item 
 the Wikibase label service that finds the property value that has the most-preferred language.
 %% \end{itemize}
+These non-standard constructs had largely been used to improve query evaluation.  Other systems using the WDQS also use non-standard constructs to get around problems with query termination caused by the slowness of Blazegraph.
 
-These non-standard constructs had largely been used to improve query evaluation.  Other systems that use the WDQS also use non-standard constructs to get around problems with query termination caused by the slowness of Blazegraph.
 Named sub-queries were eliminated by substituting the named query where it was referenced.  The locality service was eliminated by unrestricted querying and then filtering based on computed distances.  The gather-scatter service was mostly eliminated by using transitive closure and filters or limits.  
+Perhaps the most problematic construct to eliminate was the Wikibase label service, as it involves preference. Based on suggestions from Hannah Bast, the leader of the QLever team, Jinja templates were implemented that generate standard SPARQL 1.1 constructs to efficiently determine the best
+labels or descriptions.  The templates take a Wikidata item plus a sequence of language codes and the generated SPARQL effectively iterates over the language codes, and returns the label with the first language code for which the item has a label or description in that language code.  
+Versions of the templates had to be written to work well with unbound query variables, as can arise in queries with \texttt{OPTIONAL}. 
 
-Perhaps the most problematic construct to eliminate was the Wikibase label service, as it involves preference.  To replace the service in standard SPARQL 1.1, a Jinja template was implemented that generates the correct query components.  This initial implementation was found to have bad performance when looking up labels for unbound values, potentially requiring a rewrite of the whole query to avoid their encounter.  An improvement to the query template was provided that circumvents the performance degradation entirely.  As of the end of 2025, the template is only a partial solution for the unavailable label service, until the performance of a complete replacement can be analyzed, and a suitable default label is given when no label is found in any of the requested languages. 
-
-Some queries were initially slower under QLever than under Blazegraph.  This was unexpected because QLever is generally much faster than Blazegraph.  The queries involved \texttt{OPTIONAL} constructs, which when run isolated result in a large subresults.  Communications with the QLever team indicated that this was a known, current limitation in QLever that is due to be optimized in early 2026. Several of the problematic queries were refactored to replace their expensive portions by using \texttt{UNION} constructs.
+% Some queries were initially slower under QLever than under Blazegraph.  This was unexpected because QLever is generally much faster than Blazegraph.  The queries involved \texttt{OPTIONAL} constructs, which, when run isolated,  result in large subresults.  Communications with the QLever team indicated that this was a known, current limitation in QLever, which has since been addressed. Several of the problematic queries were refactored to replace their expensive portions by using \texttt{UNION} constructs.
 
 % \bigskip
 
-In general, though the process took about eighteen months, the overall results are quite satisfactory.  Only very few queries still have problems as of the end of 2025.  As several queries were problematic in Blazegraph as well, the few remaining problems with the QLever backend do not indicate a reduction in overall performance of Scholia.  Our effort shows that it is generally possible to adjust any system that uses the WDQS to instead use standard SPARQL~1.1 queries.
+In general, though the process took about eighteen months, the overall results are quite satisfactory, and the QLever-based setup exhibits improved performance compared to the original Blazegraph one.  
+% Only very few queries still have problems in early 2026.  As several queries were problematic in Blazegraph as well, the few remaining problems with the QLever backend do not indicate a reduction in overall performance of Scholia.
+While the official Scholia service is yet to be updated to use the new QLever-based setup, our effort shows that it is generally possible to adjust any system that uses the WDQS to instead use standard SPARQL~1.1 queries.
 
-The next step in updating Scholia to only utilizing standard SPARQL~1.1 queries is to set up an official Wikimedia Foundation Wikidata query service using a SPARQL~1.1 engine. If, contrary to current expectations, that service does not use QLever, the Scholia queries may have to be adjusted to tune them to that engine.  Finally, the official Scholia service will have to be updated to use the new QLever-backed version of Scholia.
+The Wikimedia Foundation is looking into making its
+official Wikidata Query Service SPARQL 1.1. compliant, too. If, contrary to current
+expectations, that service does not use QLever, the Scholia queries may need some further adjustments. 
 
-\bigskip
+\medskip
 %\section{Conclusion}
     
 The demo at SWAT4HCLS will be set up to demonstrate Scholia, along with opportunities to investigate the changes made in the conversion and effects of using QLever.
