@@ -56,6 +56,10 @@
     orcid=0009-0009-1449-5423,
 ]
 
+\author[5]{Johannes Kalmbach}[%
+    orcid=0000-0002-5582-161,
+]
+
 \author[6]{Lars G. Willighagen}[%
     orcid=0000-0002-4751-4637,
 ]
@@ -86,7 +90,7 @@ Scholia used to query the Wikidata Query Service (WDQS), powered by the Blazegra
 This service has been facing major efficiency challenges for years, which eventually led to what is known as the
 \emph{WDQS graph split}. As a consequence of this graph split, there was no longer a single service for the complete data,
 but two separate services for about half of the data each. Since Scholia queries make extensive use of the complete data, a new solution was needed.
-In this short demonstration paper, we describe how Scholia was migrated to the QLever SPARQL engine. As part of this process, all Blazegraph-specific constructs were removed and all queries were rewritten to be fully compliant with the SPARQL 1.1 standard. At the same time, performance was significantly improved.
+In this demonstration paper, we describe how Scholia was migrated to the QLever SPARQL engine. As part of this process, all Blazegraph-specific constructs were removed and all queries were rewritten to be fully compliant with the SPARQL 1.1 standard. At the same time, performance was significantly improved.
 \end{abstract}
 
 %%
@@ -124,7 +128,7 @@ Wikidata is a crowd-curated platform providing general knowledge and references 
 Scholia~\cite{Nielsen_Scholia_Scientometrics_and_2017} is a specialized portal for the scientific community that 
 serves
 % provides access to 
-Wikidata content through a set of 387 precomposed SPARQL query templates organized into over 40 profile types, called \emph{aspects}. These cover general entities such as authors, works, venues, organizations, events, and event series, as well as more special ones like taxa, diseases, chemicals, genes or proteins~\cite{Willighagen2025}. Because many Scholia queries require data from both WSDQ-main and WDQS-scholarly, the split posed a critical challenge to the continuation of the service. As an interim solution, the Wikimedia Foundation continued to provide a Blazegraph instance with the unified full graph until 
+Wikidata content through a set of 387 precomposed SPARQL query templates organized into over 40 profile types, called \emph{aspects}. These cover general entities such as authors, works, venues, organizations, events, and event series, as well as more special ones like taxa, diseases, chemicals, genes or proteins~\cite{Willighagen2025}. Because many Scholia queries require data from both WDQS-main and WDQS-scholarly, the split posed a critical challenge to the continuation of the service. As an interim solution, the Wikimedia Foundation continued to provide a Blazegraph instance with the unified full graph until 
 % decommissioning it on 
 20 January 2026.
 % 
@@ -187,7 +191,7 @@ ultimately selecting the third one:
 %\section{Migration Process}
 
 A fork of the original Scholia project was created~\cite{scholia:github} to collaborate on the necessary modifications, around which several hackathons were organized~\cite{wikidata:scholia:events2025}.
-A decision was made to use a Wikidata query service~(\url{https://qlever.dev/api/wikidata}) powered by QLever~\cite{qlever}.
+A decision was made to use a Wikidata query service~(\url{https://qlever.dev/api/wikidata}) powered by QLever~\cite{qlever,Bast2022Efficient}.
 This decision was supported by benchmarking multiple SPARQL engines~\cite{patelschneider2024benchmarking}, of which QLever was fastest overall.
 
 The bulk of the work was eliminating non-standard constructs from query templates.  The major types of these constructs were:
