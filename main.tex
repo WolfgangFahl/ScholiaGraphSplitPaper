@@ -86,7 +86,7 @@ Scholia used to query the Wikidata Query Service (WDQS), powered by the Blazegra
 This service has been facing major efficiency challenges for years, which eventually led to what is known as the
 \emph{WDQS graph split}. As a consequence of this graph split, there was no longer a single service for the complete data,
 but two separate services for about half of the data each. Since Scholia queries make extensive use of the complete data, a new solution was needed.
-In this short demonstration paper, we describe how Scholia was migrated to the QLever SPARQL engine. As part of this process, all Blazegraph-specific constructs were removed and all queries were rewritten to be fully compliant with the SPARQL 1.1 standard. At the same time, performance significantly improved.
+In this short demonstration paper, we describe how Scholia was migrated to the QLever SPARQL engine. As part of this process, all Blazegraph-specific constructs were removed and all queries were rewritten to be fully compliant with the SPARQL 1.1 standard. At the same time, performance was significantly improved.
 \end{abstract}
 
 %%
@@ -212,10 +212,12 @@ the Wikibase \emph{label service} for finding labels for items, for a given sequ
 \smallskip\noindent
 Most of these constructs originated as workarounds for efficiency problems with Blazegraph. For the same reason, they are also used by many other systems using the Wikidata query service. An engine like QLever, that can efficiently handle standard SPARQL constructs at the scale of Wikidata, obviates the need for such workarounds.
 
-Specifically, named sub-queries were eliminated by substituting the named query where it was referenced.  The locality service was eliminated by unrestricted querying and then filtering based on computed distances. The gather-scatter service was eliminated by using transitive closure and filters or limits.  
+Specifically, named sub-queries were eliminated by substituting the named query where it was referenced.  The locality service was eliminated by unrestricted querying and filtering based on computed distances. The gather-scatter service was eliminated by using transitive closure and filters or limits.  
 
-The hardest construct to eliminate was the Wikibase label service, because it involved a user-dependent sequence of fallback languages and the number of labels in Wikidata is huge (750 million at the time of this writing).
-We solved this by using a fixed sequence of fallback languages realized using four \emph{OPTIONAL} joins per label variable, and an additional \emph{BIND} for potentially unbound variables.
+The hardest construct to eliminate was the Wikibase label service, because it depends on access to the entire query to determine the relevant variables and because there are many labels in Wikidata.
+We solved this by using a macro that takes the variables as an argument and is expanded before the query is sent for evaluation.
+The expansion uses a sequence of \emph{OPTIONAL} joins based on the HTTP \emph{Accept-Language} header sent by the browser,
+with a preceding \emph{BIND} to handle potentially unbound variables that can come from previous \emph{OPTIONAL} constructs in the query.
 
 % Some queries were initially slower under QLever than under Blazegraph.  This was unexpected because QLever is generally much faster than Blazegraph.  The queries involved \texttt{OPTIONAL} constructs, which, when run isolated,  result in large subresults.  Communications with the QLever team indicated that this was a known, current limitation in QLever, which has since been addressed. Several of the problematic queries were refactored to replace their expensive portions by using \texttt{UNION} constructs.
 
@@ -229,7 +231,7 @@ Since the Scholia queries are complex and cover a wide range of SPARQL construct
 \medskip
 %\section{Conclusion}
     
-The demo at SWAT4HCLS will show various aspects of Scholia aspects. In particular, we will use queries for the SWAT4HCLS event series to showcase the changes made and the performance improvements achieved by using QLever.
+The demo at SWAT4HCLS will show query updates of various Scholia aspects to exemplify the changes made and the performance improvements achieved by using QLever. This includes a demo the Scholia page for the SWAT4HCLS event series~\cite{ScholiaSWAT4HCLS}
 
 \begin{acknowledgments}
   The authors thank everyone who has contributed patches or bug reports to the Scholia project, particularly
